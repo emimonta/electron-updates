@@ -11,6 +11,20 @@ const template = [
           window.webContents.send("editor-event", "toggle-bold"); // Invia al renderer (Chromium)
         },
       },
+      {
+        label: "Toggle Italic",
+        click() {
+          const window = BrowserWindow.getFocusedWindow();
+          window.webContents.send("editor-event", "toggle-italic"); // Invia al renderer (Chromium)
+        },
+      },
+      {
+        label: "Toggle Strike throught",
+        click() {
+          const window = BrowserWindow.getFocusedWindow();
+          window.webContents.send("editor-event", "toggle-strike"); // Invia al renderer (Chromium)
+        },
+      },
     ],
   },
   {

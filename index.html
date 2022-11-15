@@ -42,6 +42,10 @@
         console.log(arg);
         // send message back to main process
         event.sender.send("editor-reply", `Received ${arg}`);
+
+        if (arg === "toggle-bold") editor.toggleBold();
+        else if (arg === "toggle-italic") editor.toggleItalic();
+        else if (arg === "toggle-strike") editor.toggleStrikethrough();
       });
 
       ipcRenderer.send("editor-reply", "Page Loaded"); // Invia a Node
