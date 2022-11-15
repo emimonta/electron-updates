@@ -1,4 +1,4 @@
-const { app, Menu, shell } = require("electron");
+const { app, Menu, shell, ipcMain } = require("electron");
 
 const template = [
   {
@@ -12,7 +12,17 @@ const template = [
       },
     ],
   },
-  {
+];
+
+if (process.platform === "darwin") {
+  template.unshift({
+    label: app.getName(),
+    submenu: [{ role: "about" }, { type: "separator" }, { role: "quit" }],
+  });
+}
+
+if (process.env.DEBUG) {
+  template.push({
     label: "Debugging",
     submenu: [
       {
@@ -25,15 +35,12 @@ const template = [
         accelerator: "Alt+R",
       },
     ],
-  },
-];
-
-if (process.platform === "darwin") {
-  template.unshift({
-    label: app.getName(),
-    submenu: [{ role: "about" }, { type: "separator" }, { role: "quit" }],
   });
 }
+
+ipcMain.on("editor-reply", (event, arg) => {
+  console.log(`Received reply from web page: ${arg}`);
+});
 
 const menu = Menu.buildFromTemplate(template);
 
