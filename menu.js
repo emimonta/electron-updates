@@ -1,6 +1,18 @@
-const { app, Menu, shell, ipcMain } = require("electron");
+const { app, Menu, shell, ipcMain, BrowserWindow } = require("electron");
 
 const template = [
+  {
+    label: "Format",
+    submenu: [
+      {
+        label: "Toggle Bold",
+        click() {
+          const window = BrowserWindow.getFocusedWindow();
+          window.webContents.send("editor-event", "toggle-bold"); // Invia al renderer (Chromium)
+        },
+      },
+    ],
+  },
   {
     role: "help",
     submenu: [
