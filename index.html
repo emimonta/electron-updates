@@ -46,6 +46,7 @@
         if (arg === "toggle-bold") editor.toggleBold();
         else if (arg === "toggle-italic") editor.toggleItalic();
         else if (arg === "toggle-strike") editor.toggleStrikethrough();
+        else if (arg === "save") event.sender.send("save", editor.value());
       });
 
       ipcRenderer.send("editor-reply", "Page Loaded"); // Invia a Node

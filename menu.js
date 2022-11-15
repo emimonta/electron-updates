@@ -1,4 +1,11 @@
-const { app, Menu, shell, ipcMain, BrowserWindow } = require("electron");
+const {
+  app,
+  Menu,
+  shell,
+  ipcMain,
+  BrowserWindow,
+  globalShortcut,
+} = require("electron");
 
 const template = [
   {
@@ -66,6 +73,19 @@ if (process.env.DEBUG) {
 
 ipcMain.on("editor-reply", (event, arg) => {
   console.log(`Received reply from web page: ${arg}`);
+});
+
+ipcMain.on("save", (event, arg) => {
+  console.log("Saving content of file");
+  console.log(arg);
+});
+
+app.on("ready", () => {
+  globalShortcut.register("CommandOrControl+S", () => {
+    console.log("Saving the file");
+    const window = BrowserWindow.getFocusedWindow();
+    window.webContents.send("editor-event", "save"); // Invia al renderer (Chromium)
+  });
 });
 
 const menu = Menu.buildFromTemplate(template);
