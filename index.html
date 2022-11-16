@@ -49,6 +49,10 @@
         else if (arg === "save") event.sender.send("save", editor.value());
       });
 
+      ipcRenderer.on("load", (event, content) => {
+        if (content) editor.value(content);
+      });
+
       ipcRenderer.send("editor-reply", "Page Loaded"); // Invia a Node
     </script>
   </body>
