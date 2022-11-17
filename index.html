@@ -30,7 +30,7 @@
       }
     </style>
   </head>
-  <body>
+  <body ondrop="dropHandler(event)">
     <textarea id="editor"></textarea>
     <script>
       let editor = new SimpleMDE({
@@ -54,6 +54,25 @@
       });
 
       ipcRenderer.send("editor-reply", "Page Loaded"); // Invia a Node
+
+      function dropHandler(event) {
+        event.preventDefault();
+
+        if (event.dataTransfer.items) {
+          if (event.dataTransfer.items[0].kind === "file") {
+            let file = event.dataTransfer.items[0].getAsFile();
+            if (file.name.split(".").pop() === "md") {
+              let reader = new FileReader();
+              reader.onload = (e) => {
+                console.log(e.target.result);
+                editor.codemirror.setValue(e.target.result);
+              };
+
+              reader.readAsText(file);
+            }
+          }
+        }
+      }
     </script>
   </body>
 </html>
